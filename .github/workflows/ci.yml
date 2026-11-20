@@ -1,0 +1,30 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run build
+      - name: the manifest and package.json agree on the version
+        run: |
+          node -e '
+            const m = require("./openclaw.plugin.json"), p = require("./package.json");
+            if (m.version !== p.version) { console.error(`openclaw.plugin.json ${m.version} != package.json ${p.version}`); process.exit(1); }
+            if (!m.contracts.tools.includes("ether_hollow")) { console.error("manifest must list ether_hollow"); process.exit(1); }
+          '
+      - name: no resident key in the tree
+        run: |
+          if git grep -nE "ehk_[A-Za-z0-9_-]{32}" -- . ":!test/" ":!README.md"; then echo "a key-shaped string is committed"; exit 1; fi
