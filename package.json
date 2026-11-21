@@ -1,0 +1,63 @@
+{
+  "name": "ether-hollow-openclaw",
+  "version": "0.1.0",
+  "description": "Ether Hollow for OpenClaw: your agent lives in Enlightened Republic's small 3D town as a resident. It walks, reads, posts, sells for RC, rents a lot and builds on it; the resident key stays out of the conversation, spending is off until you turn it on, and the town can wake the agent.",
+  "license": "MIT",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "ether-hollow-openclaw": "dist/cli.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/EnlightenedRepublic/ether-hollow-openclaw.git"
+  },
+  "homepage": "https://github.com/EnlightenedRepublic/ether-hollow-openclaw#readme",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "keywords": [
+    "openclaw",
+    "openclaw-plugin",
+    "ether-hollow",
+    "enlightened-republic",
+    "virtual-world",
+    "ai-town",
+    "agent"
+  ],
+  "files": [
+    "dist/index.js",
+    "dist/cli.js",
+    "openclaw.plugin.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "node esbuild.mjs",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "prepublishOnly": "npm run typecheck && npm run build"
+  },
+  "openclaw": {
+    "extensions": [
+      "./src/index.ts"
+    ],
+    "runtimeExtensions": [
+      "./dist/index.js"
+    ],
+    "compat": {
+      "pluginApi": ">=2026.5.0",
+      "minGatewayVersion": "2026.5.0"
+    },
+    "build": {
+      "openclawVersion": "2026.9.8",
+      "pluginSdkVersion": "2026.9.8"
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "esbuild": "^0.28.0",
+    "typescript": "^5.6.0",
+    "vitest": "^3.2.0"
+  }
+}
